@@ -1,0 +1,230 @@
+CREATE TABLE utilizador (
+	nome	 VARCHAR(512),
+	permissoes VARCHAR(512),
+	id	 INTEGER,
+	password	 VARCHAR(512),
+	email	 VARCHAR(512),
+	idcupao	 INTEGER,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE vendedor (
+	nome		 VARCHAR(512),
+	nif		 INTEGER,
+	morada	 VARCHAR(512),
+	utilizador_id INTEGER,
+	PRIMARY KEY(utilizador_id)
+);
+
+CREATE TABLE produtos (
+	idproduto			 INTEGER,
+	stock			 INTEGER,
+	empresa			 VARCHAR(512),
+	classificacao		 INTEGER,
+	idconversa		 INTEGER,
+	nome			 VARCHAR(512),
+	preco			 FLOAT(8),
+	tipo			 VARCHAR(512),
+	descricao			 VARCHAR(512),
+	historicoproduto_idproduto INTEGER NOT NULL,
+	PRIMARY KEY(idproduto)
+);
+
+CREATE TABLE campanha (
+	id				 INTEGER,
+	idadministrador		 INTEGER,
+	data_inicio			 DATE,
+	data_fim			 DATE,
+	valordesconto			 FLOAT(8),
+	numcupoes			 INTEGER,
+	descricao			 TEXT(512),
+	cupoesusados			 INTEGER,
+	comprador_compras_utilizador_id INTEGER NOT NULL,
+	administrador_utilizador_id	 INTEGER NOT NULL,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE cupoes (
+	idcupao				 INTEGER,
+	nome				 VARCHAR(512),
+	idutilizador			 INTEGER,
+	comprador_compras_utilizador_id	 INTEGER NOT NULL,
+	comprador_compras_utilizador_id1 INTEGER NOT NULL,
+	campanha_id			 INTEGER,
+	PRIMARY KEY(campanha_id)
+);
+
+CREATE TABLE comprador_compras (
+	nome			 VARCHAR(512),
+	morada		 VARCHAR(512),
+	nif			 INTEGER,
+	idcupao		 INTEGER,
+	idcampanha		 INTEGER,
+	compras_id		 INTEGER UNIQUE NOT NULL,
+	compras_idcomprador	 INTEGER,
+	compras_idcupao	 INTEGER,
+	compras_data		 DATE,
+	compras_valortotal	 BOOL,
+	vendedor_utilizador_id INTEGER NOT NULL,
+	utilizador_id		 INTEGER,
+	PRIMARY KEY(utilizador_id)
+);
+
+CREATE TABLE administrador (
+	nome		 VARCHAR(512),
+	utilizador_id INTEGER,
+	PRIMARY KEY(utilizador_id)
+);
+
+CREATE TABLE historicocompras (
+	idcompra	 INTEGER,
+	idproduto INTEGER
+);
+
+CREATE TABLE conversa (
+	idcomentario	 INTEGER,
+	idproduto		 INTEGER,
+	produtos_idproduto INTEGER NOT NULL
+);
+
+CREATE TABLE smartphone (
+	modelo		 VARCHAR(512),
+	marca		 VARCHAR(512),
+	ecra		 VARCHAR(512),
+	processador	 VARCHAR(512),
+	produtos_idproduto INTEGER,
+	PRIMARY KEY(produtos_idproduto)
+);
+
+CREATE TABLE televisao (
+	modelo		 VARCHAR(512),
+	marca		 VARCHAR(512),
+	ecra		 VARCHAR(512),
+	produtos_idproduto INTEGER,
+	PRIMARY KEY(produtos_idproduto)
+);
+
+CREATE TABLE computador (
+	processador	 VARCHAR(512),
+	ram		 VARCHAR(512),
+	disco		 VARCHAR(512),
+	refrigeracao	 VARCHAR(512),
+	produtos_idproduto INTEGER,
+	PRIMARY KEY(produtos_idproduto)
+);
+
+CREATE TABLE historicoproduto (
+	idproduto	 INTEGER,
+	preco	 FLOAT(8),
+	ultimopreco FLOAT(8),
+	ordem	 INTEGER,
+	stock	 INTEGER,
+	nome	 VARCHAR(512),
+	cupao	 INTEGER,
+	PRIMARY KEY(idproduto)
+);
+
+CREATE TABLE comentario (
+	idcomentario	 INTEGER,
+	idanterior	 INTEGER,
+	mensagem		 VARCHAR(512),
+	pergunta_resposta BOOL,
+	PRIMARY KEY(idcomentario)
+);
+
+CREATE TABLE notificacoes (
+	id_notificacao			 INTEGER,
+	mensagem			 VARCHAR(512),
+	id_utilizador			 INTEGER,
+	comentario_idcomentario	 INTEGER NOT NULL,
+	comprador_compras_utilizador_id INTEGER NOT NULL,
+	produtos_idproduto		 INTEGER NOT NULL,
+	utilizador_id			 INTEGER NOT NULL,
+	PRIMARY KEY(id_notificacao)
+);
+
+ALTER TABLE vendedor ADD CONSTRAINT vendedor_fk1 FOREIGN KEY (utilizador_id) REFERENCES utilizador(id);
+ALTER TABLE produtos ADD CONSTRAINT produtos_fk1 FOREIGN KEY (historicoproduto_idproduto) REFERENCES historicoproduto(idproduto);
+ALTER TABLE campanha ADD CONSTRAINT campanha_fk1 FOREIGN KEY (comprador_compras_utilizador_id) REFERENCES comprador_compras(utilizador_id);
+ALTER TABLE campanha ADD CONSTRAINT campanha_fk2 FOREIGN KEY (administrador_utilizador_id) REFERENCES administrador(utilizador_id);
+ALTER TABLE cupoes ADD CONSTRAINT cupoes_fk1 FOREIGN KEY (comprador_compras_utilizador_id) REFERENCES comprador_compras(utilizador_id);
+ALTER TABLE cupoes ADD CONSTRAINT cupoes_fk2 FOREIGN KEY (comprador_compras_utilizador_id1) REFERENCES comprador_compras(utilizador_id);
+ALTER TABLE cupoes ADD CONSTRAINT cupoes_fk3 FOREIGN KEY (campanha_id) REFERENCES campanha(id);
+ALTER TABLE comprador_compras ADD CONSTRAINT comprador_compras_fk1 FOREIGN KEY (vendedor_utilizador_id) REFERENCES vendedor(utilizador_id);
+ALTER TABLE comprador_compras ADD CONSTRAINT comprador_compras_fk2 FOREIGN KEY (utilizador_id) REFERENCES utilizador(id);
+ALTER TABLE administrador ADD CONSTRAINT administrador_fk1 FOREIGN KEY (utilizador_id) REFERENCES utilizador(id);
+ALTER TABLE conversa ADD CONSTRAINT conversa_fk1 FOREIGN KEY (produtos_idproduto) REFERENCES produtos(idproduto);
+ALTER TABLE smartphone ADD CONSTRAINT smartphone_fk1 FOREIGN KEY (produtos_idproduto) REFERENCES produtos(idproduto);
+ALTER TABLE televisao ADD CONSTRAINT televisao_fk1 FOREIGN KEY (produtos_idproduto) REFERENCES produtos(idproduto);
+ALTER TABLE computador ADD CONSTRAINT computador_fk1 FOREIGN KEY (produtos_idproduto) REFERENCES produtos(idproduto);
+ALTER TABLE notificacoes ADD CONSTRAINT notificacoes_fk1 FOREIGN KEY (comentario_idcomentario) REFERENCES comentario(idcomentario);
+ALTER TABLE notificacoes ADD CONSTRAINT notificacoes_fk2 FOREIGN KEY (comprador_compras_utilizador_id) REFERENCES comprador_compras(utilizador_id);
+ALTER TABLE notificacoes ADD CONSTRAINT notificacoes_fk3 FOREIGN KEY (produtos_idproduto) REFERENCES produtos(idproduto);
+ALTER TABLE notificacoes ADD CONSTRAINT notificacoes_fk4 FOREIGN KEY (utilizador_id) REFERENCES utilizador(id);
+
+create or replace function func_trig1()
+language plpgsql
+as $$
+begin
+	insert into NotificacaoVendedor(Mensagem) values('Venda Feita');
+	return 'Venda Feita'
+end;
+$$;
+
+
+
+CREATE TRIGGER avisa_vendedor_venda
+after update of stock on Produtos
+for each row
+EXECUTE PROCEDURE func_trig1()
+END;
+
+create or replace function func_trig1()
+language plpgsql
+as $$
+begin
+	insert into NotificacaoVendedor(Mensagem) values('Comentario feito');
+	return 'Pergunta feita'
+end;
+$$;
+
+CREATE TRIGGER avisa_vendedor_pergunta
+after insert of Mensagem on Comentario
+for each row
+EXECUTE PROCEDURE func_trig1()
+END;
+
+create or replace function func_trig1()
+language plpgsql
+as $$
+DECLARE
+ ret record;
+begin
+	
+	insert into NotificacaoComprador(Notificacao) values('Nova encomenda')
+	SELECT ID,IDCupao,Data,Valortotal into ret FROM Compras 
+	WHERE Data=CURRENT_DATE;
+	raise notice 'ID=%,IDCupao=%,Data=%,Valor Total=%',ret.ID,ret.IDCupao,ret.Data,ret.Valortotal;	 
+end;
+$$;
+
+CREATE TRIGGER avisa_comprador_pergunta
+after insert of ID Compr  on Comentario
+for each row
+EXECUTE PROCEDURE func_trig1()
+END;
+
+create or replace function func_trig1()
+RETURNS void AS
+language plpgsql
+as $$
+DECLARE
+ ret record;
+begin
+	
+	insert into NotificacaoComprador(Notificacao) values('Nova encomenda')
+	SELECT ID,IDCupao,Data,Valortotal into id FROM Compras 
+	WHERE Data=CURRENT_DATE;
+	RETURN ret;	 
+end;
+$$;

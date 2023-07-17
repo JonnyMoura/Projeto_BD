@@ -1,0 +1,363 @@
+{
+	"info": {
+		"_postman_id": "1d354f12-177e-4153-8023-6fb56aa2b0bd",
+		"name": "BD_demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Nome\": \"Moura\",\r\n    \"Password\": \"cona\",\r\n    \"Permissoes\": \"Comprador\",\r\n    \"ID\": 6969,\r\n    \"Email\": \"jachegaahah@gmail.com\",\r\n    \"Morada\": \"Corral dos porcos\",\r\n    \"NIF\": 56786\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\": \"Moura\",\r\n    \"Password\": \"cona\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"IDProduto\": 1348,\n    \"Stock\": 20,\n    \"Empresa\": \"Amazone\",\n    \"Nome\": \"Laptop estragado\",\n    \"Preco\": 2000000.0,\n    \"tipo\": \"Computador\",\n    \"RAM\": \"16GB\",\n    \"Disco\": \"128GB\",\n    \"Refrigeracao\": \"Linda que doi\",\n    \"Processador\": \"Intel core I11\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "product_id",
+						"value": "1349",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Stock\": 24\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/product/update/{product_id}?{product_id}=7689",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"product",
+						"update",
+						"{product_id}"
+					],
+					"query": [
+						{
+							"key": "{product_id}",
+							"value": "7689"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy a Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cart\": [9876, 3],\n    \"Cupao\": 123\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/order/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{product_id}",
+						"value": "1349",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dbproj/product/{product_id}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"product",
+						"{product_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compare Producs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dbproj/product/compare",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"product",
+						"compare"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give Feedback to a Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"raiting\" : 10,\n    \"feedback\" : \"Impecavel\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/rating?{product_id}=1348",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"",
+						"dbproj",
+						"rating"
+					],
+					"query": [
+						{
+							"key": "{product_id}",
+							"value": "1348"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filters",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Tipo\": \"Computador\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/filtros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"filtros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Campaign",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"localidade\": \"Figueira da Foz\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/dbproj/campaign/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"campaign",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Campaign Stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dbproj/report/campaign",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dbproj",
+						"report",
+						"campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Anual Stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/proj/report/year",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"proj",
+						"report",
+						"year"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
